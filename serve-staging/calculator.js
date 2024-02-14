@@ -854,4 +854,6 @@ function updateCharts() {
 
     chart_PipelineImpact.update();
     chart_RevenueImpact.update();
+
+    console.log("Test");
 }
