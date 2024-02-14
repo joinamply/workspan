@@ -1,0 +1,18 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function loadServeScript(src) {
+        let script = document.createElement("script");
+        script.setAttribute("src", src),
+            script.setAttribute("type", "module"),
+            document.body.appendChild(script),
+            script.addEventListener("load", () => {
+                console.log("Calculator Script Loaded");
+            }),
+            script.addEventListener("error", (e) => {
+                console.log("Error loading file", e);
+            });
+    }
+    let src = window.location.host.includes("webflow.io") ? "https://serve-stagging/" : "https://serve-prod/";
+    loadServeScript(src);
+});
+</script>
