@@ -19,7 +19,8 @@
         opacity: 1;
     }
 
-    .button.is-secondary::before, .button.is-text::before {
+    .button.is-secondary::before,
+    .button.is-text::before {
         content: '';
         position: absolute;
         top: 0;
@@ -48,3 +49,77 @@
     .button.is-gradient:hover::before {
         opacity: 1;
     }
+
+    /* ===============
+    Partner Strategy
+    =============== */
+    @media screen and (max-width: 1246px) {
+        .partner-strategy_big-title-wrapper {
+            width: 9rem;
+        }
+
+        .partner-strategy_big-title-wrapper .heading-style-h6 {
+            font-size: 1.25rem;
+        }
+
+        .partner-strategy_titles-grid .subhead-small {
+            font-size: 1rem;
+        }
+
+        .partner-strategy_logo-wrapper {
+            width: 9rem;
+        }
+
+        .partner-strategy_logo-image {
+            height: 2.5rem;
+        }
+
+        .partner-strategy_content-item .icon-embed-large {
+            width: 3.5rem;
+            height: 3.5rem;
+        }
+
+        .partner-strategy_content-item .text-size-medium {
+            font-size: 1rem;
+        }
+
+        .partner-strategy_content-item li {
+            font-size: 0.875rem;
+        }
+    }
+
+    @media screen and (max-width: 1092px) {
+        .partner-strategy_big-title-wrapper {
+            width: 7rem;
+        }
+
+        .partner-strategy_big-title-wrapper .heading-style-h6 {
+            font-size: 1rem;
+        }
+
+        .partner-strategy_titles-grid .subhead-small {
+            font-size: 0.875rem;
+        }
+
+        .partner-strategy_logo-wrapper {
+            width: 7rem;
+        }
+
+        .partner-strategy_logo-image {
+            height: 2.25rem;
+        }
+
+        .partner-strategy_content-item .icon-embed-large {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .partner-strategy_content-item .text-size-medium {
+            font-size: 0.875rem;
+        }
+
+        .partner-strategy_content-item li {
+            font-size: 0.75rem;
+        }
+    }
+</style>
