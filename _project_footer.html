@@ -1,7 +1,85 @@
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/joinamply/amply-motion@b1.1.1/dist/index.js"></script>
+
+<!-- Logo Marquee -->
+<script>
+    $(".logo-marquee_component").each(function () {
+        let disabled = $(this).attr("logo-marquee-disabled");
+        if(disabled) return;
+        let duration = parseFloat($(this).attr("logo-marquee-duration"));
+        let marqueeList = $(this).find(".logo-marquee_list");
+        let marqueeListWrapper = $(this).find(".logo-marquee_wrapper");
+        $(marqueeList).clone().appendTo(marqueeListWrapper);
+        $(marqueeList).clone().appendTo(marqueeListWrapper);
+        // Create the GSAP timeline
+        let logosMarqueeTimeline = gsap.timeline({ repeat: -1 });
+        logosMarqueeTimeline.to(".logo-marquee_list", { x: "-100%", duration: duration, ease: "none" });
+    });
+</script>
+
+<!-- Basic Swiper Slider -->
+<script>
+    $(".swiper_component").each(function () {
+        let slidesPerView = "auto";
+        let followFinger = $(this).attr("followFinger");
+        let speed = parseInt($(this).attr("speed"));
+        let autoHeight = $(this).attr("autoHeight");
+        const swiper = new Swiper($(this).find(".swiper")[0], {
+            slidesPerView: slidesPerView,
+            followFinger: followFinger,
+            speed: speed,
+            autoHeight: autoHeight,
+            pagination: {
+                el: $(this).find(".swiper_bullets-wrapper")[0],
+                bulletActiveClass: "is-active",
+                bulletClass: "swiper_bullet",
+                bulletElement: "button",
+                clickable: true
+            },
+            navigation: {
+                nextEl: $(this).find("[swiper-next]")[0],
+                prevEl: $(this).find("[swiper-prev]")[0],
+                disabledClass: "is-disabled"
+            }
+        });
+    });
+</script>
+
+<!-- Hyperscaler Testimonials -->
+<script>
+    $(".hyperscaler-testimonials_component").each(function () {
+        let buttonLeft = $(this).find(".hyperscaler-testimonials_tab-button.is-left");
+        let buttonRight = $(this).find(".hyperscaler-testimonials_tab-button.is-right");
+        const tabsLength = $(this).find(".hyperscaler-testimonials_tab-link").length;
+        let currentTab = 0;
+
+        $(buttonLeft).click(function () {
+            currentTab = (currentTab - 1 + tabsLength) % tabsLength;
+            $(this).siblings(".hyperscaler-testimonials_tab-link").eq(currentTab).click();
+        });
+
+        $(buttonRight).click(function () {
+            currentTab = (currentTab + 1) % tabsLength;
+            $(this).siblings(".hyperscaler-testimonials_tab-link").eq(currentTab).click();
+        });
+    });
+</script>
+
 <!-- Code Snippets -->
 <script>
+    // Footer Copyright
+    $('[copyright-year]').text(new Date().getFullYear());
+
     // Hide section if collection is empty
-$('.w-dyn-empty').parents('[hide-if-collection-empty]').each(function () { $(this).hide() });
+    $('.w-dyn-empty').parents('[hide-if-empty]').each(function () { $(this).hide() });
+
+    // Keep form height on success
+    $(window).bind("load resize submit", function (e) {
+        $('form').each(function () {
+            var formHeight = $(this).height();
+            $(this).siblings('.w-form-done').css({ 'min-height': formHeight });
+        });
+    });
 </script>
 
 <!-- HubSpot Cookie UTM -->

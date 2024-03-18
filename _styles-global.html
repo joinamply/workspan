@@ -13,7 +13,7 @@
     /* Focus state style for keyboard navigation for the focusable elements */
     *[tabindex]:focus-visible,
     input[type="file"]:focus-visible {
-        outline: 0.125rem solid #4d65ff;
+        outline: 0.125rem solid var(--color--accent--primary-light);
         outline-offset: 0.125rem;
     }
 
@@ -115,7 +115,48 @@
         appearance: none;
     }
 
-    h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong {
+    h1 strong,
+    h2 strong,
+    h3 strong,
+    h4 strong,
+    h5 strong,
+    h6 strong {
         color: var(--color--accent--secondary);
+    }
+
+    /* ===============
+    Custom List Bullets
+    =============== */
+    [custom-bullets] ul {
+        padding-left: 0rem;
+    }
+
+    [custom-bullets] ul li {
+        display: block;
+        position: relative;
+        align-items: baseline;
+        list-style-type: none;
+        padding-left: 0rem;
+        left: 2.5rem;
+        margin-bottom: 1rem;
+        margin-right: 2.5rem;
+    }
+
+    [custom-bullets] ul li::before {
+        position: absolute;
+        top: 0.1rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        content: "";
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        background-size: 1.5rem 1.5rem;
+        margin-right: 1.25rem;
+        margin-left: -2.5rem;
+    }
+
+    [custom-bullets="blue"] ul li::before {
+        background-image: url("https://uploads-ssl.webflow.com/65ef3f78a5f37299a050e10b/65f8be86e70ba916d7377a13_CheckCircleBlue.svg");
     }
 </style>
