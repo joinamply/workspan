@@ -133,4 +133,20 @@
     .benefits_component[icon-color="accent-tertiary"] .benefits-item_icon {
         color: var(--color--accent--tertiary);
     }
+
+    /* ===============
+    FAQ
+    =============== */
+    .faq_component .faq_accordion:last-child {
+        border-bottom: 1px solid transparent;
+    }
+
+    /* ===============
+    Feature Image
+    =============== */
+    @media screen and (min-width: 992px) {
+        .feature-image_list .feature-image_item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+    }
 </style>
