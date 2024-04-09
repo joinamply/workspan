@@ -2,7 +2,7 @@
     /* ===============
     Buttons
     =============== */
-    .button::before {
+    .button::before, .hs-button::before {
         content: '';
         position: absolute;
         top: 0;
@@ -15,7 +15,7 @@
         transition: opacity 0.3s ease-in-out;
     }
 
-    .button:hover::before {
+    .button:hover::before, .hs-button:hover::before {
         opacity: 1;
     }
 
