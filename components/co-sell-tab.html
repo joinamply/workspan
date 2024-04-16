@@ -1,0 +1,42 @@
+<script>
+    var Webflow = Webflow || [];
+    Webflow.push(function () {
+        gsap.set($(".co-sell-tabs_tab-pane"), { opacity: 0 });
+        gsap.set($(".co-sell-tabs_tab-pane.w--tab-active"), { opacity: 1 });
+        let currentPane = $(".co-sell-tabs_tab-pane.w--tab-active");
+        let nextPane = $(".co-sell-tabs_tab-pane").eq(0);
+
+        $(".tab-scroll_trigger").each(function (index) {
+            ScrollTrigger.create({
+                trigger: $(this),
+                start: "top center",
+                end: "+=0",
+                markers: true,
+                onEnter: () => activeTab(index + 1, index),
+                onEnterBack: () => activeTab(index, index + 1)
+            });
+        });
+
+        function activeTab(nextIndex, prevIndex) {
+            currentPane = $(".co-sell-tabs_tab-pane").eq(prevIndex);
+            nextPane = $(".co-sell-tabs_tab-pane").eq(nextIndex);
+            //check if a tween is playing, if so, kill it
+            if (gsap.isTweening(currentPane)) {
+                gsap.killTweensOf(currentPane);
+            }
+            if (gsap.isTweening(nextPane)) {
+                gsap.killTweensOf(nextPane);
+            }
+            // Play the new tween
+            gsap.to(nextPane, { opacity: 1, duration: 0.3 });
+            gsap.to(currentPane, { opacity: 0, duration: 0.3, delay: 0.15 });
+
+            $("[tab-scroll_tab-link]").eq(nextIndex).trigger("click");
+        }
+
+        // Debug the size of the window when size changes
+        $(window).resize(function () {
+            console.log($(window).height());
+        });
+    });
+</script>
