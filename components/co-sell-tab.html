@@ -1,3 +1,15 @@
+<style>
+    /* ===============
+    Co-Sell Tab
+    =============== */
+    /* Sets tab pane to display block instead of default display:none */
+    /* Allows CSS opacity transitions */
+    .co-sell-tabs_tab-pane.w-tab-pane,
+    .co-sell-tabs_tab-pane.w--current {
+        display: block;
+    }
+</style>
+
 <script>
     var Webflow = Webflow || [];
     Webflow.push(function () {
@@ -11,7 +23,7 @@
                 trigger: $(this),
                 start: "top center",
                 end: "+=0",
-                markers: true,
+                markers: false,
                 onEnter: () => activeTab(index + 1, index),
                 onEnterBack: () => activeTab(index, index + 1)
             });
