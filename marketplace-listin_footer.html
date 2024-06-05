@@ -1,0 +1,96 @@
+<script>
+    const annualPrice_PrivateOfferListing = 6000;
+    const annualPrice_MeteredListing = 9000;
+    const setupCost_PrivateOfferListing = 2000;
+    const setupCost_MeteredListing = 2500;
+
+    const input_PrivateOfferListing = $(document).find('#privateOfferListing');
+    const input_MeteredListing = $(document).find('#meteredListing');
+
+    const checkbox_AWS = $(document).find('#aws');
+    const checkbox_Google = $(document).find('#azure');
+    const checkbox_Microsoft = $(document).find('#google');
+
+    const requirementText_AWS = $(document).find('#requirementText_AWS');
+    const requirementText_Google = $(document).find('#requirementText_Google');
+    const requirementText_Microsoft = $(document).find('#requirementText_Microsoft');
+
+    const resultAmount_TotalListings = $(document).find('[total-listing]');
+    const resultAmount_PrivateOfferListing = $(document).find('[private-offer-listing-amount]');
+    const resultAmount_MeteredListing = $(document).find('[metered-listing-amount]');
+
+    const resultPrice_TotalListings = $(document).find('[total-listing-price]');
+    const resultPrice_PrivateOfferListing = $(document).find('[private-offer-listing-price]');
+    const resultPrice_MeteredListing = $(document).find('[metered-listing-price]');
+    const resultPrice_AnnualContract = $(document).find('[annual-contract]');
+    const resultPrice_FirstYearCost = $(document).find('[first-year-cost]');
+
+    let numMarketplaces = 0;
+    let totalPrivateOfferListing = 0;
+    let totalMeteredListing = 0;
+    let totalPrivateOfferListingCost = 0;
+    let totalMeteredListingCost = 0;
+    let totalAnnualContract = 0;
+    let totalSetupFee = 0;
+    let totalFirstYearCost = 0;
+
+    function calculateResults() {
+        // First get the markeplace amount
+        numMarketplaces = 0;
+        if (checkbox_AWS.prop('checked')) {
+            numMarketplaces++;
+        }
+        if (checkbox_Google.prop('checked')) {
+            numMarketplaces++;
+        }
+        if (checkbox_Microsoft.prop('checked')) {
+            numMarketplaces++;
+        }
+
+        // Calculate the totals
+        totalPrivateOfferListing = input_PrivateOfferListing.val() * numMarketplaces;
+        totalMeteredListing = input_MeteredListing.val() * numMarketplaces;
+        totalPrivateOfferListingCost = totalPrivateOfferListing * annualPrice_PrivateOfferListing;
+        totalMeteredListingCost = totalMeteredListing * annualPrice_MeteredListing;
+        totalAnnualContract = totalPrivateOfferListingCost + totalMeteredListingCost;
+        totalSetupFee = (totalPrivateOfferListing * setupCost_PrivateOfferListing) + (totalMeteredListing * setupCost_MeteredListing);
+        totalFirstYearCost = totalAnnualContract + totalSetupFee;
+
+        console.log('totalAnnualContract', totalAnnualContract);
+        console.log('totalSetupFee', totalSetupFee);
+        console.log('totalFirstYearCost', totalFirstYearCost);
+    }
+
+    function displayResults() {
+        // resultAmount_TotalListings.text(numMarketplaces);
+        // resultAmount_PrivateOfferListing.text(totalPrivateOfferListing);
+        // resultAmount_MeteredListing.text(totalMeteredListing);
+
+        // resultPrice_TotalListings.text(numMarketplaces);
+        // resultPrice_PrivateOfferListing.text(totalPrivateOfferListingCost);
+        // resultPrice_MeteredListing.text(totalMeteredListingCost);
+        // resultPrice_AnnualContract.text(totalAnnualContract);
+        // resultPrice_FirstYearCost.text(totalFirstYearCost);
+    }
+
+    function toggleRequirementText(checkbox) {
+        // Finds the near by element with the requiment-text attr and display it if val is on
+        if (checkbox.val() == 'on') {
+            $(checkbox).closest('.form-group').find('.requirement-text').show();
+        } else {
+            $(checkbox).closest('.form-group').find('.requirement-text').hide();
+        }
+    }
+
+    // Control what happens when the inputs changes
+    $('select').change(function () {
+        calculateResults();
+        displayResults();
+    });
+
+    $('input[type="checkbox"]').change(function () {
+        toggleRequirementText($(this));
+        calculateResults();
+        displayResults();
+    });
+</script>
