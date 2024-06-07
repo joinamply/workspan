@@ -54,7 +54,7 @@
         totalMeteredListingCost = totalMeteredListing * annualPrice_MeteredListing;
         totalAnnualContract = totalPrivateOfferListingCost + totalMeteredListingCost;
         totalSetupFee = (totalPrivateOfferListing * setupCost_PrivateOfferListing) + (totalMeteredListing * setupCost_MeteredListing);
-        totalFirstYearCost = totalAnnualContract + totalSetupFee;
+        totalFirstYearCost = (totalAnnualContract + totalSetupFee) / 1000;
 
         console.log('totalAnnualContract', totalAnnualContract);
         console.log('totalSetupFee', totalSetupFee);
@@ -62,35 +62,133 @@
     }
 
     function displayResults() {
-        // resultAmount_TotalListings.text(numMarketplaces);
-        // resultAmount_PrivateOfferListing.text(totalPrivateOfferListing);
-        // resultAmount_MeteredListing.text(totalMeteredListing);
+        resultAmount_TotalListings.text(totalPrivateOfferListing + totalMeteredListing);
+        resultAmount_PrivateOfferListing.text(totalPrivateOfferListing);
+        resultAmount_MeteredListing.text(totalMeteredListing);
 
-        // resultPrice_TotalListings.text(numMarketplaces);
-        // resultPrice_PrivateOfferListing.text(totalPrivateOfferListingCost);
-        // resultPrice_MeteredListing.text(totalMeteredListingCost);
-        // resultPrice_AnnualContract.text(totalAnnualContract);
-        // resultPrice_FirstYearCost.text(totalFirstYearCost);
+        if (input_PrivateOfferListing.val() >= 5) {
+            resultPrice_PrivateOfferListing.text("Contact us for discounted rates.");
+        }
+        else {
+            resultPrice_PrivateOfferListing.text("$" + totalPrivateOfferListingCost);
+        }
+        if (input_MeteredListing.val() >= 5) {
+            resultPrice_MeteredListing.text("Contact us for discounted rates.");
+        }
+        else {
+            resultPrice_MeteredListing.text("$" + totalMeteredListingCost);
+        }
+        if (input_PrivateOfferListing.val() >= 5 || input_MeteredListing.val() >= 5) {
+            resultPrice_AnnualContract.text("-");
+            resultPrice_FirstYearCost.text("-");
+            resultPrice_TotalListings.text("Contact us for discounted rates.");
+        }
+        else {
+            resultPrice_TotalListings.text("$" + totalSetupFee);
+            resultPrice_AnnualContract.text("$" + totalAnnualContract);
+            resultPrice_FirstYearCost.text("$" + totalFirstYearCost + "k");
+        }
     }
 
     function toggleRequirementText(checkbox) {
         // Finds the near by element with the requiment-text attr and display it if val is on
-        if (checkbox.val() == 'on') {
-            $(checkbox).closest('.form-group').find('.requirement-text').show();
-        } else {
-            $(checkbox).closest('.form-group').find('.requirement-text').hide();
-        }
+        // if (checkbox.prop('checked')) {
+        //     $(checkbox).parent().find('.checkbox-requirement_text').css('opacity', '1');
+        // } else {
+        //     $(checkbox).parent().find('.checkbox-requirement_text').css('opacity', '0');
+        // }
+    }
+
+    function updateFormFields() {
+        $('[name="metered_listings"]').val(input_MeteredListing.val());
+        $('[name="total_first_year_cost"]').val(totalFirstYearCost);
     }
 
     // Control what happens when the inputs changes
     $('select').change(function () {
         calculateResults();
         displayResults();
+        updateFormFields();
     });
 
     $('input[type="checkbox"]').change(function () {
         toggleRequirementText($(this));
         calculateResults();
         displayResults();
+        updateFormFields();
     });
+</script>
+
+<!-- HubSpot API -->
+<script>
+	let hsApiUrl = 'https://api.hsforms.com/submissions/v3/integration/submit/4417116/';
+	let formData = {
+		fields: [],
+	};
+	let UTMs = ['utm_medium', 'utm_source', 'utm_campaign', 'utm_term', 'utm_content'];
+
+	$('[hs-form]').on('submit', function (event) {
+        let useHoneypot = $(this).attr("honeypot");
+        if (useHoneypot) {
+            console.log("Honeypot field is enabled");
+            let checker = $(this).find("[checker]");
+            if (checker.val() != "") {
+                event.preventDefault();
+                return false;
+            }
+        }
+		let hsForm = $(this);
+		let hsFormID = $(this).attr('hs-form');
+		if (hsFormID == undefined) return;
+		let hsEndPoint = hsApiUrl + hsFormID;
+		let redirectURL = $(this).attr('redirect-url');
+		// Add the form data to the formData object
+		hsForm.find('[hs-form-field]').each(function () {
+			let field = {
+				name: $(this).attr('hs-form-field'),
+				value: $(this).val(),
+			};
+			formData.fields.push(field);
+		});
+		// Add the UTM parameters to the formData object
+		UTMs.forEach(utm => {
+			let utmValue = new URLSearchParams(window.location.search).get(utm);
+			if (utmValue != null) {
+				let field = {
+					name: `${utm}`,
+					value: utmValue,
+				};
+				formData.fields.push(field);
+			}
+		});
+		console.log('HubSpot Form Data:', formData);
+		// Make a POST request to HubSpot
+		fetch(hsEndPoint, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(formData),
+		})
+			.then(response => response.json())
+			.then(data => {
+				console.log('HubSpot Form Submission Successful:', data);
+
+				const { redirectUri } = data;
+
+				if (redirectURL != undefined) {
+					setTimeout(() => {
+						window.location = redirectURL;
+					}, 1000);
+				} else if (redirectUri != undefined) {
+					setTimeout(() => {
+						window.location = redirectUri;
+					}, 1000);
+				}
+			})
+			.catch(error => {
+				console.error('HubSpot Form Submission Error:', error);
+				// Handle error, e.g., show an error message to the user
+			});
+	});
 </script>
