@@ -100,8 +100,9 @@
     }
 
     function updateFormFields() {
+        $('[name="hs_transactable_listings"]').val(input_PrivateOfferListing.val());
         $('[name="metered_listings"]').val(input_MeteredListing.val());
-        $('[name="total_first_year_cost"]').val(totalFirstYearCost);
+        $('[name="total_first_year_cost"]').val("$" + totalFirstYearCost + "k");
     }
 
     // Control what happens when the inputs changes
